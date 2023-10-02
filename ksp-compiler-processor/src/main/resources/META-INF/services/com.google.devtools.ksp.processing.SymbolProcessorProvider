@@ -1,0 +1,3 @@
+dev.techullurgy.ksp.processor.entities.EntitySymbolProcessorProvider
+dev.techullurgy.ksp.processor.daos.DaosSymbolProcessorProvider
+dev.techullurgy.ksp.processor.databases.DatabaseSymbolProcessorProvider
