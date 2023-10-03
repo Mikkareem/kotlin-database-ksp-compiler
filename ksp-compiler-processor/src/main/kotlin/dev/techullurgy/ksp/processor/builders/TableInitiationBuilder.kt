@@ -2,10 +2,8 @@ package dev.techullurgy.ksp.processor.builders
 
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
-import com.google.devtools.ksp.processing.KSPLogger
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ksp.writeTo
-import dev.techullurgy.ksp.builders.Structure
 import dev.techullurgy.ksp.builders.TableInitiation
 import java.util.*
 

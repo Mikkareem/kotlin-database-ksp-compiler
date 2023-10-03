@@ -114,5 +114,3 @@ object QueryBuilder {
         }
     }
 }
-
-private fun String.fixSpaces() = this.replace(" ", Char(183).toString())

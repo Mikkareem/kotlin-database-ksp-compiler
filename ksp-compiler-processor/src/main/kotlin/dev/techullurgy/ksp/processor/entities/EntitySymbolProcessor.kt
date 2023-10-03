@@ -3,7 +3,7 @@ package dev.techullurgy.ksp.processor.entities
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.*
 import dev.techullurgy.ksp.annotations.Entity
-import dev.techullurgy.ksp.builders.Structure
+import dev.techullurgy.ksp.processor.builders.Structure
 import dev.techullurgy.ksp.processor.builders.EntityDeclarations
 import dev.techullurgy.ksp.processor.builders.TableInitiationBuilder
 import dev.techullurgy.ksp.processor.builders.TableStructureBuilder

@@ -1,6 +1,7 @@
-package dev.techullurgy.ksp.builders
+package dev.techullurgy.ksp.processor.builders
 
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
+import dev.techullurgy.ksp.builders.ForeignKey
 
 data class Structure(
     val tableName: String,

@@ -4,14 +4,12 @@ import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.*
-import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.PropertySpec
-import com.squareup.kotlinpoet.buildCodeBlock
+import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ksp.toTypeName
 import dev.techullurgy.ksp.annotations.Dao
 import dev.techullurgy.ksp.annotations.Database
 import dev.techullurgy.ksp.processor.builders.DatabaseBuilder
+import dev.techullurgy.ksp.processor.extensions.fixSpaces
 import dev.techullurgy.ksp.processor.extensions.getAllAbstractFunctionsOfReturnTypeAnnotatedWith
 import dev.techullurgy.ksp.processor.extensions.getCompanionFunctions
 import dev.techullurgy.ksp.processor.extensions.getOverridableFunSpecBuilder
@@ -50,10 +48,6 @@ class DatabaseSymbolProcessor(
                 "@Database should be available for abstract class or interface"
             }
 
-            require(false) {
-                classDeclaration.getCompanionFunctions()
-            }
-
             val daoFunctions = classDeclaration.getAllAbstractFunctionsOfReturnTypeAnnotatedWith(Dao::class)
 
             daoFunctions.forEach { it.accept(this, Unit) }
@@ -67,7 +61,7 @@ class DatabaseSymbolProcessor(
                 returnTypeName,
                 KModifier.PRIVATE
             )
-                .initializer("%L()", returnTypeName.toString()+"Implementation")
+                .delegate("lazy { %L(queryExecutor) }".fixSpaces(), returnTypeName.toString()+"Implementation")
                 .build()
 
             propertySpecs.add(propertySpec)

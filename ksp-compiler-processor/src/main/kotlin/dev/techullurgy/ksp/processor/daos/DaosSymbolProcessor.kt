@@ -55,9 +55,8 @@ class DaosSymbolProcessor(
                 }
         }
 
-        @OptIn(KspExperimental::class)
         override fun visitFunctionDeclaration(function: KSFunctionDeclaration, data: Unit) {
-            if(function.isAnnotationPresent(Insert::class)) {
+            if(function.isAnnotatedWith(Insert::class)) {
                 handleInsertAnnotatedFunction(function)
             } else if(function.isAnnotatedWith(Update::class)) {
                 handleUpdateAnnotatedFunction(function)
@@ -110,7 +109,8 @@ class DaosSymbolProcessor(
             val overrideFunction = FunSpec.builder(function.simpleName.asString())
                 .addModifiers(KModifier.OVERRIDE)
                 .addParameters(parameterSpecs)
-                .addCode("val query = %N($entityParameterName)", queryFunc.name)
+                .addStatement("val query = %N($entityParameterName)", queryFunc.name)
+                .addStatement("%N(query)", "executeDml")
                 .build()
 
             funSpecs.add(queryFunc)

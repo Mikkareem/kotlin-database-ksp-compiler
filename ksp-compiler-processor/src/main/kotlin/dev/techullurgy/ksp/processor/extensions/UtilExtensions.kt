@@ -3,9 +3,9 @@ package dev.techullurgy.ksp.processor.extensions
 import com.google.devtools.ksp.getDeclaredFunctions
 import com.google.devtools.ksp.isConstructor
 import com.google.devtools.ksp.symbol.*
-import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.KModifier
+import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ksp.toTypeName
+import dev.techullurgy.ksp.RoomDatabase
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 
@@ -54,3 +54,16 @@ internal fun <T: Annotation> KSClassDeclaration.getAllAbstractFunctionsOfReturnT
 }
 
 internal fun <T: Annotation> List<KSPropertyDeclaration>.findAnnotatedProperties(klass: KClass<T>): List<KSPropertyDeclaration> = filter { it.isAnnotatedWith(klass) }
+
+internal fun String.fixSpaces() = this.replace(" ", Char(183).toString())
+
+internal fun TypeSpec.Builder.constructorProperty(name: String, typeName: TypeName, vararg modifiers: KModifier): TypeSpec.Builder {
+    val primaryConstructor = FunSpec.constructorBuilder()
+        .addParameter(ParameterSpec(name, typeName))
+        .build()
+
+    val property = PropertySpec.builder(name, typeName, *modifiers)
+        .initializer(name)
+        .build()
+    return primaryConstructor(primaryConstructor).addProperty(property)
+}
