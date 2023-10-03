@@ -46,3 +46,7 @@ annotation class DML
 @Retention(AnnotationRetention.SOURCE)
 @Target(AnnotationTarget.CLASS)
 annotation class Database
+
+@Retention(AnnotationRetention.SOURCE)
+@Target(AnnotationTarget.FUNCTION)
+annotation class Transactional
