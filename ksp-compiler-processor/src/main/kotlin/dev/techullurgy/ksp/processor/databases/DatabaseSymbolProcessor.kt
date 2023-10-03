@@ -4,14 +4,16 @@ import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.*
-import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.KModifier
+import com.squareup.kotlinpoet.PropertySpec
+import com.squareup.kotlinpoet.buildCodeBlock
 import com.squareup.kotlinpoet.ksp.toTypeName
 import dev.techullurgy.ksp.annotations.Dao
 import dev.techullurgy.ksp.annotations.Database
 import dev.techullurgy.ksp.processor.builders.DatabaseBuilder
 import dev.techullurgy.ksp.processor.extensions.fixSpaces
 import dev.techullurgy.ksp.processor.extensions.getAllAbstractFunctionsOfReturnTypeAnnotatedWith
-import dev.techullurgy.ksp.processor.extensions.getCompanionFunctions
 import dev.techullurgy.ksp.processor.extensions.getOverridableFunSpecBuilder
 import java.util.*
 

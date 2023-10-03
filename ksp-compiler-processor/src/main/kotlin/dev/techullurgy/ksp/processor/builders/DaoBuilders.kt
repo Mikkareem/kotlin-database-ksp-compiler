@@ -9,7 +9,6 @@ import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.writeTo
 import dev.techullurgy.ksp.QueryExecutor
-import dev.techullurgy.ksp.RoomDatabase
 import dev.techullurgy.ksp.processor.extensions.constructorProperty
 
 object DaoBuilders {

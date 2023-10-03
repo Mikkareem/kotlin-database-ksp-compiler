@@ -5,7 +5,6 @@ import com.google.devtools.ksp.isConstructor
 import com.google.devtools.ksp.symbol.*
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ksp.toTypeName
-import dev.techullurgy.ksp.RoomDatabase
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 

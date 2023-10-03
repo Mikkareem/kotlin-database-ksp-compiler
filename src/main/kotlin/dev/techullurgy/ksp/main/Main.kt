@@ -4,7 +4,6 @@ import dev.techullurgy.ksp.Room
 import dev.techullurgy.ksp.RoomDatabase
 import dev.techullurgy.ksp.annotations.*
 import dev.techullurgy.ksp.main.test.Reft
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Entity(tableName = "timer")
