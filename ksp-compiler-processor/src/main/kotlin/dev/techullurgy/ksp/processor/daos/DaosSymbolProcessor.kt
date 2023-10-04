@@ -1,5 +1,6 @@
 package dev.techullurgy.ksp.processor.daos
 
+import com.google.devtools.ksp.isOpen
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
@@ -14,6 +15,8 @@ import com.squareup.kotlinpoet.ksp.toTypeName
 import dev.techullurgy.ksp.annotations.*
 import dev.techullurgy.ksp.processor.builders.DaoBuilders
 import dev.techullurgy.ksp.processor.builders.QueryBuilder
+import dev.techullurgy.ksp.processor.builders.TransactionFunctionBuilder
+import dev.techullurgy.ksp.processor.extensions.getOverridableFunSpecBuilder
 import dev.techullurgy.ksp.processor.extensions.isAnnotatedWith
 
 class DaosSymbolProcessor(
@@ -53,6 +56,10 @@ class DaosSymbolProcessor(
                 .forEach {
                     it.accept(this, Unit)
                 }
+
+            classDeclaration.getAllFunctions()
+                .filter { it.isOpen() && !it.isAbstract }
+                .forEach { it.accept(this, Unit) }
         }
 
         override fun visitFunctionDeclaration(function: KSFunctionDeclaration, data: Unit) {
@@ -97,7 +104,10 @@ class DaosSymbolProcessor(
         }
 
         private fun handleTransactionalAnnotatedFunction(function: KSFunctionDeclaration) {
-
+            require(function.isOpen()) { "@Transactional function need to be open for overridden" }
+            val overrideFunction = function.getOverridableFunSpecBuilder()
+            overrideFunction.addCode(TransactionFunctionBuilder.build(function, "roomDatabase"))
+            funSpecs.add(overrideFunction.build())
         }
 
         private fun buildEntityFunctions(entityParameterName: String, funNamePrefix: String, entityClassDeclaration: KSClassDeclaration, function: KSFunctionDeclaration, codeBlock: CodeBlock) {
