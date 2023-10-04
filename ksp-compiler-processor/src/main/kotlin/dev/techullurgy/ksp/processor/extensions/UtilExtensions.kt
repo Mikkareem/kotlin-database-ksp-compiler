@@ -24,9 +24,12 @@ internal fun KSClassDeclaration.getAllAbstractFunctions(): List<KSFunctionDeclar
 
 internal fun KSFunctionDeclaration.getOverridableFunSpecBuilder(): FunSpec.Builder {
     return FunSpec.builder(simpleName.asString())
+        .addParameters(parameters.map { it.toParameterSpec() })
         .addModifiers(KModifier.OVERRIDE)
         .returns(returnType!!.toTypeName())
 }
+
+internal fun KSValueParameter.toParameterSpec(): ParameterSpec = ParameterSpec(name!!.asString(), type.toTypeName())
 
 internal inline fun <reified T: Annotation> KSDeclaration.getArgumentOfAnnotation(prop: KProperty1<T, *>): Any?
         = getAllArgumentsOfAnnotation(T::class).first { it.name?.asString() == prop.name }.value
@@ -65,4 +68,15 @@ internal fun TypeSpec.Builder.constructorProperty(name: String, typeName: TypeNa
         .initializer(name)
         .build()
     return primaryConstructor(primaryConstructor).addProperty(property)
+}
+
+internal fun TypeSpec.Builder.constructorProperties(properties: List<PropertySpec>): TypeSpec.Builder {
+    val primaryConstructor = FunSpec.constructorBuilder()
+    properties.forEach {
+        primaryConstructor.addParameter(it.name, it.type)
+    }
+    val constructorProperties = properties.map {
+        it.toBuilder().initializer(it.name).build()
+    }
+    return primaryConstructor(primaryConstructor.build()).addProperties(constructorProperties)
 }

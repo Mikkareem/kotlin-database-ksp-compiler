@@ -63,7 +63,7 @@ class DatabaseSymbolProcessor(
                 returnTypeName,
                 KModifier.PRIVATE
             )
-                .delegate("lazy { %L(queryExecutor) }".fixSpaces(), returnTypeName.toString()+"Implementation")
+                .delegate("lazy { %L(queryExecutor, this) }".fixSpaces(), returnTypeName.toString()+"Implementation")
                 .build()
 
             propertySpecs.add(propertySpec)

@@ -11,10 +11,7 @@ import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.toTypeName
-import dev.techullurgy.ksp.annotations.Dao
-import dev.techullurgy.ksp.annotations.Entity
-import dev.techullurgy.ksp.annotations.Insert
-import dev.techullurgy.ksp.annotations.Update
+import dev.techullurgy.ksp.annotations.*
 import dev.techullurgy.ksp.processor.builders.DaoBuilders
 import dev.techullurgy.ksp.processor.builders.QueryBuilder
 import dev.techullurgy.ksp.processor.extensions.isAnnotatedWith
@@ -63,6 +60,8 @@ class DaosSymbolProcessor(
                 handleInsertAnnotatedFunction(function)
             } else if(function.isAnnotatedWith(Update::class)) {
                 handleUpdateAnnotatedFunction(function)
+            } else if(function.isAnnotatedWith(Transactional::class)) {
+                handleTransactionalAnnotatedFunction(function)
             }
         }
 
@@ -95,6 +94,10 @@ class DaosSymbolProcessor(
             val codeBlock = QueryBuilder.buildInsertQuery(entityParameterName, entityClassDeclaration)
 
             buildEntityFunctions(entityParameterName, "insertFor", entityClassDeclaration, function, codeBlock)
+        }
+
+        private fun handleTransactionalAnnotatedFunction(function: KSFunctionDeclaration) {
+
         }
 
         private fun buildEntityFunctions(entityParameterName: String, funNamePrefix: String, entityClassDeclaration: KSClassDeclaration, function: KSFunctionDeclaration, codeBlock: CodeBlock) {
